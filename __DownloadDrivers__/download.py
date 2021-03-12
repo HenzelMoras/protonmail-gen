@@ -57,10 +57,18 @@ def get_firefox_version():
 
 def get_latest_geckodriver_version():
     """
-    :return: the 'latest version' of geckodriver
+    :return: the 'latest version' of geckodriver to be concatenated with the download url
     """
     url = requests.get('https://github.com/mozilla/geckodriver/releases/latest').url
     if '/tag/' not in url:
         return
     return url.split('/')[-1]
+
+def get_download_url_firefox(version):
+    """
+    :returns: 'download url' for geckodriver
+    """
+    platform, architecture = get_platform_arch_firefox()
+
+    return 'https://github.com/mozilla/geckodriver/releases/download/' + version + '/geckodriver-' + version + '-' + platform + architecture + '.tar.gz'
 
