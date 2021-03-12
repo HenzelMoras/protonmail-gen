@@ -28,5 +28,21 @@ def get_platform_arch_firefox():
         raise RuntimeError('could not determine geckodriver download URL for this platform.')
     return platform,architecture
 
-print(get_platform_arch_firefox())
+def get_firefox_version():
+    """
+    returns the firefox `version` installed on the client
+    """
+    platform, _ = get_platform_arch_firefox()
+    if platform == 'linux':
+        try:
+            with subprocess.Popen(['firefox', '--version'], stdout=subprocess.PIPE) as proc:
+                version = proc.stdout.read().decode('utf-8').replace('Mozilla Firefox', '').strip()
+        except:
+            return None
+    else:
+        return
+    return version
+
+
+
 
