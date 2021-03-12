@@ -7,9 +7,18 @@
 import sys
 import os
 import subprocess
+try:
+    import requests
+except ImportError:
+    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'requests'])
+finally:
+    import requests
 
 
 def os_arch():
+    """
+    :returns: 'os_arch' of the linux client
+    """
     os_arch = '32'
     output = subprocess.check_output(['uname', '-m'])
     if type(output) != str:
@@ -21,6 +30,9 @@ def os_arch():
     return os_arch
 
 def get_platform_arch_firefox():
+    """
+    :returns: 'platform' and 'architecture' of the linux client
+    """ 
     if sys.platform.startswith('linux'):
         platform = 'linux'
         architecture = os_arch()
@@ -30,7 +42,7 @@ def get_platform_arch_firefox():
 
 def get_firefox_version():
     """
-    returns the firefox `version` installed on the client
+    returns the firefox 'version' installed on the client
     """
     platform, _ = get_platform_arch_firefox()
     if platform == 'linux':
@@ -43,6 +55,12 @@ def get_firefox_version():
         return
     return version
 
-
-
+def get_latest_geckodriver_version():
+    """
+    :return: the 'latest version' of geckodriver
+    """
+    url = requests.get('https://github.com/mozilla/geckodriver/releases/latest').url
+    if '/tag/' not in url:
+        return
+    return url.split('/')[-1]
 
