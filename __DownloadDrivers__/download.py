@@ -20,4 +20,13 @@ def os_arch():
         os_arch = '32'
     return os_arch
 
-print(os_arch)
+def get_platform_arch_firefox():
+    if sys.platform.startswith('linux'):
+        platform = 'linux'
+        architecture = os_arch()
+    else:
+        raise RuntimeError('could not determine geckodriver download URL for this platform.')
+    return platform,architecture
+
+print(get_platform_arch_firefox())
+
