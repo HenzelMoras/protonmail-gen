@@ -1,13 +1,13 @@
 import subprocess
 import sys
-from __DownloadDrivers__.download import *
+from __DownloadDrivers__.download import get_firefox_version, setup_firefox
 
 def install(name):
     subprocess.check_call([sys.executable, '-m', 'pip', 'install', name])
 
 def main():
 
-    my_packages = ['requests', 'clint', 'faker', 'selenium', 'colorama']
+    my_packages = ['requests', 'clint', 'faker', 'selenium', 'colorama', 'random-password-generator']
 
     for package in my_packages:
         install(package)
