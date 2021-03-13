@@ -19,7 +19,7 @@ import tarfile
 try:
     from clint.textui import progress
 except ImportError:
-    subprocess.check_call([sys.executable.'-m', 'pip', 'install', 'clint'])
+    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'clint'])
 finally:
     from clint.textui import progress
 
@@ -101,16 +101,17 @@ def download_tar_file(url,save_path):
         print('Download Successful')
         my_tar_file.extractall(save_path)
 
- def setup_firefox(firefox_ver):
-     """
-     :returns: downloads webdriver and saves it in ./webdriver
-     """
-     arc_user = get_platform_arch_firefox()
-     if firefox_ver != None:
+def setup_firefox(firefox_ver):
+    """
+    :returns: downloads webdriver and saves it in ./webdriver
+    """
+    arc_user = get_platform_arch_firefox()
+    if firefox_ver != None:
         print('Installed version - ' + str(firefox_ver))
         latest_driver = get_latest_geckodriver_version()
         print('Latest geckodriver version - ' + latest_driver)
         download_link = get_download_url_firefox(latest_driver)
         download_tar_file(download_link, './webdriver')
-     else:
+    else:
         print('Firefox is not installed')
+    
