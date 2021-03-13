@@ -13,6 +13,15 @@ except ImportError:
     subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'requests'])
 finally:
     import requests
+import urllib, time
+from io import BytesIO
+import tarfile
+try:
+    from clint.textui import progress
+except ImportError:
+    subprocess.check_call([sys.executable.'-m', 'pip', 'install', 'clint'])
+finally:
+    from clint.textui import progress
 
 
 def os_arch():
@@ -72,3 +81,23 @@ def get_download_url_firefox(version):
 
     return 'https://github.com/mozilla/geckodriver/releases/download/' + version + '/geckodriver-' + version + '-' + platform + architecture + '.tar.gz'
 
+def download_tar_file(url,save_path):
+    """
+    :returns: downloads the tar file from 'url' and extracts to 'save_path'
+    """
+    print('Downloading...')
+
+    response = requests.get(url)
+
+    total_length = sum(len(chunk) for chunk in response.iter_content(8196))
+
+    if total_length is None or total_length == 0:
+        print('Download Failed')
+        exit()
+
+    with tarfile.open(fileobj=BytesIO(response.content), mode='r|gz') as my_tar_file:
+        for chunk in progress.bar(response.iter_content(chunk_size=1024), expected_size=(total_length/1024) + 1):
+            pass
+        print('Download Successful')
+        my_tar_file.extractall(save_path)
+    
