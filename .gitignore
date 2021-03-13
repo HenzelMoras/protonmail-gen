@@ -136,3 +136,8 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+#certain project files
+webdriver/
+geckodriver.log
+
