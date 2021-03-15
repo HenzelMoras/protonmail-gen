@@ -96,7 +96,7 @@ def download_tar_file(url,save_path):
         exit()
 
     with tarfile.open(fileobj=BytesIO(response.content), mode='r|gz') as my_tar_file:
-        for chunk in progress.bar(response.iter_content(chunk_size=1024), expected_size=(total_length/1024) + 1):
+        for _chunk in progress.bar(response.iter_content(chunk_size=1024), expected_size=(total_length/1024) + 1):
             pass
         print('Download Successful')
         my_tar_file.extractall(save_path)
@@ -105,7 +105,7 @@ def setup_firefox(firefox_ver):
     """
     :returns: downloads webdriver and saves it in ./webdriver
     """
-    arc_user = get_platform_arch_firefox()
+
     if firefox_ver != None:
         print('Installed version - ' + str(firefox_ver))
         latest_driver = get_latest_geckodriver_version()
