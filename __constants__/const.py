@@ -10,13 +10,14 @@ except ImportError:
     subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'faker'])
 
 fake = Faker('en_US')
-username = fake.name().replace(" ", "")
+username = fake.name().replace(" ", fake.color_name())
+
 
 pg = PasswordGenerator()
 password = pg.generate()
+confirm_pass = password
 
-url = 'https://protonmail.com/'
-
+url = 'https://mail.protonmail.com/create/new?language=en'
 
 
 
