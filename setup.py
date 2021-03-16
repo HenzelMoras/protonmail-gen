@@ -7,7 +7,7 @@ def install(name):
 
 def main():
 
-    my_packages = ['requests', 'clint', 'faker', 'selenium', 'colorama', 'random-password-generator']
+    my_packages = ['requests', 'clint', 'faker', 'selenium', 'colorama', 'random-password-generator', 'bs', 'requests']
 
     for package in my_packages:
         install(package)
