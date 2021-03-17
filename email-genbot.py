@@ -6,8 +6,6 @@ from datetime import datetime
 from __constants__.const import url, username, password, confirm_pass, email, service
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -63,11 +61,7 @@ driver.find_element_by_xpath('//*[@id="confirmModalBtn"]').click()
 
 
 # Email verification selection
-
-WebDriverWait(driver, 60).until(EC.presence_of_element_located(
-        (By.XPATH, '//*[@id="id-signup-radio-email"]')))
-
-driver.find_element_by_xpath('//*[@id="id-signup-radio-email"]').click()
+click_element(driver, '//*[@id="id-signup-radio-email"]')
 
 """
 # fill email 
