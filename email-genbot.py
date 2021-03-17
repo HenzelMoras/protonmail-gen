@@ -2,7 +2,8 @@ from selenium import webdriver
 import time
 import os.path
 from os import path
-from __constants__.const import url,username,password,confirm_pass
+from datetime import datetime
+from __constants__.const import url, username, password, confirm_pass, email, service
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
@@ -11,6 +12,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
+import requests
+from bs4 import BeautifulSoup as bs
+from __functions__.functions import inject_input, scroll_click_element, switch_frame, click_element
 
 try:
     if path.exists('./webdriver/geckodriver'):
@@ -27,44 +31,26 @@ driver.get(url)
 time.sleep(1)
 
 # switch drivers context to iframe and fill username
-WebDriverWait(driver, 60).until(EC.visibility_of_element_located(
-        (By.TAG_NAME, 'iframe')))
-time.sleep(.5)
-driver.switch_to.frame(driver.find_element_by_tag_name("iframe"))
-WebDriverWait(driver, 60).until(EC.presence_of_element_located(
-        (By.ID, 'username'))).click
-time.sleep(2)
+switch_frame(driver, tag_name='iframe')
 
-WebDriverWait(driver, 60).until(EC.presence_of_element_located(
-        (By.ID, 'username'))).send_keys(username)
+inject_input(driver, username, id='username')
 
-time.sleep(.5)
 
 # switch to default context and fill password
 driver.switch_to.default_content()
 
-WebDriverWait(driver, 60).until(EC.presence_of_element_located(
-        (By.ID, 'password'))).click
-
-WebDriverWait(driver, 60).until(EC.presence_of_element_located(
-        (By.ID, 'password'))).send_keys(password)
-time.sleep(1)
+inject_input(driver, password, id='password')
 
 # confirm_pass
-WebDriverWait(driver, 60).until(EC.presence_of_element_located(
-        (By.ID, 'passwordc'))).click
+inject_input(driver, confirm_pass, id='passwordc')
 
-WebDriverWait(driver, 60).until(EC.presence_of_element_located(
-        (By.ID, 'passwordc'))).send_keys(confirm_pass)
-time.sleep(1)
+
 
 # create account
-driver.switch_to.frame(driver.find_element_by_class_name("bottom"))
+switch_frame(driver, class_name="bottom")
 
-WebDriverWait(driver, 60).until(EC.presence_of_element_located(
-        (By.XPATH, '/html/body/div/div/footer/button')))
-
-driver.find_element_by_xpath('/html/body/div/div/footer/button').click()
+# move the page before confirming
+scroll_click_element(driver, '/html/body/div/div/footer/button')
 
 
 # confirm creation 
@@ -76,10 +62,68 @@ WebDriverWait(driver, 60).until(EC.presence_of_element_located(
 driver.find_element_by_xpath('//*[@id="confirmModalBtn"]').click()   
 
 
-# Email verification 
+# Email verification selection
 
 WebDriverWait(driver, 60).until(EC.presence_of_element_located(
         (By.XPATH, '//*[@id="id-signup-radio-email"]')))
 
 driver.find_element_by_xpath('//*[@id="id-signup-radio-email"]').click()
 
+"""
+# fill email 
+email_verification = '//*[@id="emailVerification"]'
+
+WebDriverWait(driver, 60).until(EC.presence_of_element_located(
+        (By.XPATH, email_verification)))
+
+driver.find_element_by_xpath(email_verification).send_keys(email)
+
+
+click_send_box = '/html/body/div[2]/div/div/div/form/div/div/form[1]/div[1]/div[2]/button'
+
+
+# send the email for verification
+driver.find_element_by_xpath(click_send_box).click()
+
+# check tem-mail box and retrive code
+while True:
+    try:
+        uid = requests.get(f"https://getnada.com/api/v1/inboxes/{email}").json()
+        uid = uid["msgs"][0]["uid"]
+        print(uid)
+        break
+    except:
+        time.sleep(1)
+        pass
+
+html = requests.get(f"https://getnada.com/api/v1/messages/html/{uid}").content
+soup = bs(html,"html5lib")
+code = soup.find("code").text
+print(code)
+
+# submit verification
+verification_code = '//*[@id="codeValue"]'
+
+WebDriverWait(driver, 60).until(EC.presence_of_element_located(
+        (By.XPATH, verification_code)))
+
+driver.find_element_by_xpath(verification_code).send_keys('123')
+"""
+# complete setup
+
+complete_Setup = '/html/body/div[2]/div/div/div/form/div/div/p[3]/button'
+
+code_input = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'input[type = "text"]')))
+for i in code_input:
+        code_input.send_keys(i)
+        time.sleep(.1)
+
+
+print(' \nsaving account details\n')
+with open('account.txt', 'a') as f:
+        f.write(datetime.now().strftime("%Y-%m-%d %H:%M")+"\n")
+        f.write(username+"\n")
+        f.write(password+"\n")
+        f.write("-------------------------------\n")
+print(username)
+print(password)
