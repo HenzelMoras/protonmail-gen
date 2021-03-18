@@ -60,7 +60,6 @@ while True:
         try:
             uid = requests.get(f"{api}inboxes/{email}").json()
             uid = uid["msgs"][0]["uid"]
-            print('uid: ',uid)
             break
         except:
             time.sleep(1)
@@ -72,16 +71,16 @@ code = soup.find("code").text
 scroll_click_element(driver, '//*[@id="codeValue"]')
 inject_input(driver, code, css_selector='input[type = "text"]')
 
-scroll_click_element(driver, '//*[@id="verification-panel"]/p[3]/button') # Complete setup btn
+scroll_click_element(driver, '//*[@id="verification-panel"]/p[3]/button') 
 time.sleep(1)
 
+# Complete setup btn
 scroll_click_element(driver, '//*[@id="confirmModalBtn"]')
 
 for _ in range(0, 3): 
-        scroll_click_element(driver, '//*[@id="pm_wizard"]/div/div[5]/button[1]')
+        scroll_click_element(driver, '//*[@id="pm_wizard"]/div/div[5]/button[1]') 
         time.sleep(.5)
-        scroll_click_element(driver, '//*[@id="pm_wizard"]/div/div[5]/button[2]')
-
+        scroll_click_element(driver, '//*[@id="pm_wizard"]/div/div[5]/button[1]') 
 print("\nAccount Details.\n")
 
 username = "Username: " + username
