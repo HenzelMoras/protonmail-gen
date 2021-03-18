@@ -4,14 +4,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-def inject_input(driver, keys, xpath=None, id=None, css_Selector=None):
+def inject_input(driver, keys, xpath=None, id=None, css_selector=None):
     if xpath:
         input_box = WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.XPATH, xpath)))
     elif id:
         input_box = WebDriverWait(driver, 60).until(EC.presence_of_element_located(
         (By.ID, id)))
     else:
-        input_box = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, css_Selector)))
+        input_box = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, css_selector)))
     for i in keys:
         input_box.send_keys(i)
         time.sleep(.1)
