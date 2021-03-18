@@ -1,7 +1,7 @@
 # protonmail-gen
 Automate  proton mail  creation for various uses
 
-### Step 1
+### Steps
 ```bash
 git clone https://github.com/HenzelMoras/protonmail-gen.git
 cd protonmail-gen
