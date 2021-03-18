@@ -53,5 +53,5 @@ for i in domains:
         if 'name' in k:
             domain_list.append(v) 
 
-email = username[:6].lower() + fake.year()[:2]  + '@' + random.choice(domain_list)
-
+#email = username[:6].lower() + fake.year()[:2]  + '@' + random.choice(domain_list)
+email = username[:6].lower() + fake.year()[:2] + '@' + 'boximail.com'
