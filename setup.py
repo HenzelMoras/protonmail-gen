@@ -1,6 +1,6 @@
 import subprocess
 import sys
-from __DownloadDrivers__.download import get_firefox_version, setup_firefox
+from __drivers__.download import get_firefox_version, setup_firefox
 
 def install(name):
     subprocess.check_call([sys.executable, '-m', 'pip', 'install', name])
