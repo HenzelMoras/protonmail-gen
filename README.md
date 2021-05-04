@@ -10,7 +10,7 @@ cd protonmail-gen
 ### setup installation 
 ```bash
 chmod u+x setup.py
-./setup.py
+python3 setup.py
 ```
 
 ### Usage
