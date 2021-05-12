@@ -80,7 +80,11 @@ scroll_click_element(driver, '//*[@id="confirmModalBtn"]')
 for _ in range(0, 3): 
         scroll_click_element(driver, '//*[@id="pm_wizard"]/div/div[5]/button[1]') 
         time.sleep(.5)
-        scroll_click_element(driver, '//*[@id="pm_wizard"]/div/div[5]/button[1]') 
+        
+
+scroll_click_element(driver, '//*[@id="pm_wizard"]/div/div[5]/button[2]')
+time.sleep(.5)
+
 print("\nAccount Details.\n")
 
 username = "Username: " + username
@@ -92,3 +96,4 @@ with open("Accounts.txt", 'a') as f:
         f.write("-------------------------------\n")
 print(username)
 print(password)
+
